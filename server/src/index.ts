@@ -15,7 +15,7 @@ const PORT: number = 5000;
 app.use(cors());
 app.use(urlencoded({ extended: true }));
 app.use(json());
-app.use("/Uploads", express.static("Uploads"));
+app.use("/uploads", express.static(__dirname + "/Uploads"));
 
 app.use("/user", userRouter);
 app.use("/todo", todoRouter);

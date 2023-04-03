@@ -1,7 +1,11 @@
 import { unlink } from "fs/promises";
 
 export const removeFile = async (path: string) => {
-    await unlink(path);
+    try {
+        await unlink(path);
+    } catch (error) {
+        console.error(error);
+    }
 };
 
 export const getFileNameFromFiles = (files: Express.Multer.File[], field: string) => {

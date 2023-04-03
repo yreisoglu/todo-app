@@ -20,8 +20,9 @@ router.get("/", auth, async (req: Request, res: Response) => {
 
 router.post("/", auth, upload.any(), async (req: Request, res: Response) => {
     try {
-        const { authorId, content, tag } = req.body;
-        if (!(authorId && content)) return errorResponse("authorId and content fields are required", res);
+        const { content, tag } = req.body;
+        const authorId = getUserIdFromToken(req);
+        if (!(content)) return errorResponse("content is required", res);
 
         const files = req.files as Express.Multer.File[];
 
@@ -70,8 +71,7 @@ router.put("/", auth, upload.any(), async (req: Request, res: Response) => {
 
 router.delete("/", auth, async (req: Request, res: Response) => {
     try {
-        const { id } = req.body;
-        console.log(id);
+        const { id } = req.query;
 
         const todo = await TodoModel.findById(id);
         if (!todo) return errorResponse("This todo does not exists", res);
@@ -101,7 +101,7 @@ router.get("/tags", auth, async (req: Request, res: Response) => {
 
 router.get("/filter", auth, async (req: Request, res: Response) => {
     try {
-        const { tag } = req.body;
+        const { tag } = req.query;
         const authorId = getUserIdFromToken(req);
         const filteredTodos = await TodoModel.find({ authorId, tag });
         return successResponse(filteredTodos, res);
@@ -113,7 +113,7 @@ router.get("/filter", auth, async (req: Request, res: Response) => {
 
 router.get("/search", auth, async (req: Request, res: Response) => {
     try {
-        const { search } = req.body;
+        const { search } = req.query;
         const authorId = getUserIdFromToken(req);
         const filteredTodos = await TodoModel.find({ authorId: authorId, content: { $regex: search, $options: "i" } });
         return successResponse(filteredTodos, res);
