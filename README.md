@@ -10,7 +10,7 @@ Project is working with 2 command lines
 
 After following these instructions you can find the website at `http://localhost:3000`
 ## DB
-I chose MongoDB and it's working on cloud so we need to update `.env` file with that I sent you through message.
+I chose MongoDB and it's working on cloud so we need to update `./server/.env` file with that I sent you through message.
 
 #### Features
 - JWT auth
